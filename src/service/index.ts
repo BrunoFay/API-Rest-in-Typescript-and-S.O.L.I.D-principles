@@ -1,4 +1,4 @@
-import { IProductModel } from '../interfaces';
+import { INewProduct, IProductModel } from '../interfaces';
 
 class ProductsService {
   protected model: IProductModel;
@@ -9,6 +9,11 @@ class ProductsService {
 
   async getAll() {
     const products = await this.model.getAll();
+    return products;
+  }
+
+  async create(product:INewProduct) {
+    const products = await this.model.create(product);
     return products;
   }
 }
