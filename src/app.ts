@@ -1,8 +1,9 @@
 import express from 'express';
+import productsRoute from './routes';
 
 const app = express();
-console.log('Hello World');
 
 app.use(express.json());
 
+app.use('/products', productsRoute);
 export default app;
