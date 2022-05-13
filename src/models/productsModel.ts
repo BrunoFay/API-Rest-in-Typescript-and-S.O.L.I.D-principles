@@ -25,4 +25,5 @@ class ProductsModel {
     return { id: insertId, ...product };
   }
 }
+
 export default ProductsModel;
