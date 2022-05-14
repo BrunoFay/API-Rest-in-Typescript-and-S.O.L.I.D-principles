@@ -37,3 +37,13 @@ export interface IUserService {
   create: (u: INewUser) => Promise<string>;
   createToken:(u: INewUser) => Promise<void>;
 } 
+
+export interface IOrderDB{
+  id: number,
+  userId: number,
+  productsIds: number[]
+}
+export interface IOrderModel{
+  getAll:()=> Promise<IOrderDB[]>
+}
+export type IOrderService = IOrderModel;
