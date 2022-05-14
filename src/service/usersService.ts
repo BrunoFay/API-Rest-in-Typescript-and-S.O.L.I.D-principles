@@ -27,7 +27,7 @@ class UserService {
         username: userInfos.username,
         password: userInfos.password,
       },
-    }, process.env.JWT_SECRET ||'senhasecreta', {
+    }, process.env.JWT_SECRET || 'senhasecreta', {
       expiresIn: '7d',
       algorithm: 'HS256',
     });
