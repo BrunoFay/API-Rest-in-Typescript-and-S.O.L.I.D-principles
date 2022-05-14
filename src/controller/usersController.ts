@@ -10,10 +10,8 @@ class UsersController {
 
   public create: RequestHandler = async (req, res, next) => {
     try {
-      console.log(req.body);
-      
       const token = await this.UsersService.create(req.body);
-      res.status(201).json(token);
+      res.status(201).json({ token });
     } catch (error) {
       next(error);
     }

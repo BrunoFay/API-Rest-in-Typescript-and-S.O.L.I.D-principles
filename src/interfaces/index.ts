@@ -35,5 +35,5 @@ export interface IUserModel {
 }
 export interface IUserService {
   create: (u: INewUser) => Promise<string>;
-  createToken:(u: INewUser) => Promise<string>;
+  createToken:(u: INewUser) => Promise<void>;
 } 
