@@ -8,6 +8,9 @@ import UsersController from '../controller/usersController';
 import UsersService from '../service/usersService';
 import UsersModel from '../models/usersModel';
 import UserValidate from '../middlewares/userValidate';
+import OrdersController from '../controller/ordersController';
+import OrdersService from '../service/ordersService';
+import OrdersModel from '../models/ordersModel';
 
 const router = Router();
 const productsModel = new ProductsModel(connection);
@@ -18,8 +21,12 @@ const usersModel = new UsersModel(connection);
 const usersService = new UsersService(usersModel);
 const usersController = new UsersController(usersService);
 const userValidate = new UserValidate();
+const ordersModel = new OrdersModel(connection);
+const ordersService = new OrdersService(ordersModel);
+const ordersController = new OrdersController(ordersService);
 
 router.get('/products', productsController.getAll);
 router.post('/products', productValidate.validate, productsController.create);
 router.post('/users', userValidate.validate, usersController.create);
+router.get('/orders', ordersController.getAll);
 export default router;
