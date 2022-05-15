@@ -43,10 +43,28 @@ export interface IOrderDB {
   userId: number,
   productsIds: number[]
 }
+export interface IOrder {
+  userId: number,
+  productsId: number[]
+}
+export interface INewOrder {
+  productsId: number[],
+  decoded:{}
+}
+export interface INewOrderToModel{
+  userId: number,
+  productsId: number
+}
 export interface IOrderModel {
   getAll: () => Promise<IOrderDB[]>
+  create: (o:INewOrderToModel) => Promise<void>
 }
-export type IOrderService = IOrderModel;
+
+export interface IOrderService {
+  getAll: () => Promise<IOrderDB[]>
+  create: (o:INewOrder) => Promise<IOrder>
+}
+
 
 export interface ILoginUser {
   username: string,

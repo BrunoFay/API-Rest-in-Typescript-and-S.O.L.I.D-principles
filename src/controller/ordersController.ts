@@ -16,6 +16,17 @@ class OrdersController {
       next(error);
     }
   };
+
+  public create: RequestHandler = async (req, res, next) => {
+    try {
+      console.log(req.body);
+
+      const newOrder = await this.orderService.create(req.body);
+      res.status(201).json(newOrder);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default OrdersController;
