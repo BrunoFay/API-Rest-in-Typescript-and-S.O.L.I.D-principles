@@ -1,11 +1,13 @@
-import { INewOrder, IOrder, IOrderModel } from '../interfaces';
+import { INewOrderToService, IOrderModel } from '../interfaces';
 
 class OrdersService {
   protected model: IOrderModel;
-  private userId: number
+
+  private userId: number;
+
   constructor(dep: IOrderModel) {
     this.model = dep;
-    this.userId = 0
+    this.userId = 0;
   }
 
   async getAll() {
@@ -13,14 +15,13 @@ class OrdersService {
     return orders;
   }
 
-  async create({ productsId: arrayProducts }: INewOrder) {
-    const checkIfUserexist =
+  async create({ userId, productsIds: arrayProducts }: INewOrderToService) {
+    this.userId = userId;
     arrayProducts.map(async (prod: number) => {
-      await this.model.create({ userId: this.userId, productsId: prod })
+      await this.model.create({ userId: this.userId, productsIds: prod });
     });
     return { userId: this.userId, productsId: arrayProducts };
   }
-
 }
 
 export default OrdersService;

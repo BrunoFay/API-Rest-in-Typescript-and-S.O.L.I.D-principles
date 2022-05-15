@@ -32,10 +32,14 @@ export interface INewUser {
 
 export interface IUserModel {
   create: (u: INewUser) => Promise<void>
+  getUserBylogin: (u: ILoginUser) => Promise<IUserDB[] | []>
+
 }
 export interface IUserService {
+  checkIfUserexist: (u: ILoginUser) => Promise<IUserDB | void>
   create: (u: INewUser) => Promise<string>;
   createToken: (u: INewUser) => Promise<void>;
+
 }
 
 export interface IOrderDB {
@@ -49,22 +53,25 @@ export interface IOrder {
 }
 export interface INewOrder {
   productsId: number[],
-  decoded:{}
+  user: string
 }
-export interface INewOrderToModel{
+export interface INewOrderToModel {
   userId: number,
-  productsId: number
+  productsIds: number
 }
 export interface IOrderModel {
   getAll: () => Promise<IOrderDB[]>
-  create: (o:INewOrderToModel) => Promise<void>
+  create: (o: INewOrderToModel) => Promise<void>
 }
 
+export interface INewOrderToService {
+  userId: number,
+  productsIds: number[]
+}
 export interface IOrderService {
   getAll: () => Promise<IOrderDB[]>
-  create: (o:INewOrder) => Promise<IOrder>
+  create: (o: INewOrderToService) => Promise<IOrder>
 }
-
 
 export interface ILoginUser {
   username: string,
@@ -73,6 +80,7 @@ export interface ILoginUser {
 
 export interface ILoginModel {
   login: (u: ILoginUser) => Promise<IUserDB[] | null>
+
 }
 export interface ILoginService {
   login: (u: ILoginUser) => Promise<string | boolean>;

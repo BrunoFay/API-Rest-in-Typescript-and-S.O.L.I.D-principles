@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { INewUser, IUserModel } from '../interfaces';
+import { ILoginUser, INewUser, IUserModel } from '../interfaces';
 
 dotenv.config();
 
@@ -19,6 +19,11 @@ class UserService {
     await this.createToken(newUser);
 
     return this.token;
+  }
+
+  async checkIfUserexist(u: ILoginUser) {
+    const [checkIfUserexist] = await this.model.getUserBylogin(u);
+    if (checkIfUserexist.id) { return checkIfUserexist; }
   }
 
   async createToken(userInfos: INewUser) {

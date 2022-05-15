@@ -1,36 +1,43 @@
 import { RequestHandler } from 'express';
-import jwt, { Jwt, JwtPayload } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import connection from '../models/connection';
+import UsersModel from '../models/usersModel';
+import UsersService from '../service/usersService';
 
+const usersModel = new UsersModel(connection);
+const usersService = new UsersService(usersModel);
 
 class JwtValidate {
-  private segredo: string
+  private segredo: string;
+
   constructor() {
     this.segredo = 'batatinha123';
-
   }
+
+  public checkUserExist: RequestHandler = async (req, res, next) => {
+    const isUserValid = await usersService.checkIfUserexist(req.body.user.data);
+    if (!isUserValid) return res.status(401).json({ message: 'Invalid token' });
+    req.body = { ...req.body, user: isUserValid.id };
+    next();
+  };
+
   public validate: RequestHandler = async (req, res, next) => {
-    const token = req.headers['authorization'];
+    const token = req.headers.authorization;
 
     if (!token) {
-      return res.status(401).json({ "message": "Token not found" });
+      return res.status(401).json({ message: 'Token not found' });
     }
-    try {
 
-      const decoded = jwt.verify(token, this.segredo);
+    const decoded = jwt.verify(token, this.segredo);
 
-      if (!decoded) {
-        return res
-          .status(401)
-          .json({ "message": "Invalid token" });
-      }
-
-      req.body = { ...req.body, decoded }
-
-      next();
-    } catch (err) {
-      next(err);
+    if (!decoded) {
+      return res
+        .status(401)
+        .json({ message: 'Invalid token' });
     }
-  }
+    req.body = { ...req.body, user: decoded };
 
-};
-export default JwtValidate
+    next();
+  };
+}
+export default JwtValidate;
