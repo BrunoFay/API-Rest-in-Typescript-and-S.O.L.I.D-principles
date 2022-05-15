@@ -19,9 +19,8 @@ class OrdersController {
 
   public create: RequestHandler = async (req, res, next) => {
     try {
-      console.log(req.body);
-
-      const newOrder = await this.orderService.create(req.body);
+      const { user: userId, productsIds } = req.body;
+      const newOrder = await this.orderService.create({ userId, productsIds });
       res.status(201).json(newOrder);
     } catch (error) {
       next(error);

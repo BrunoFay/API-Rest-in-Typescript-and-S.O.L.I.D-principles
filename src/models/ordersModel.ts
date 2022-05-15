@@ -1,5 +1,5 @@
 import { Pool, ResultSetHeader } from 'mysql2/promise';
-import { INewOrder, INewOrderToModel, IOrderDB } from '../interfaces';
+import { INewOrderToModel, IOrderDB } from '../interfaces';
 
 class OrdersModel {
   public connection: Pool;
@@ -37,8 +37,10 @@ class OrdersModel {
     );
 
     await this.connection
-      .execute('UPDATE Trybesmith.Products SET orderId = ? WHERE id = ?;',
-        [insertId, order.productsId]);
+      .execute(
+        'UPDATE Trybesmith.Products SET orderId = ? WHERE id = ?;',
+        [insertId, order.productsIds],
+      );
   }
 }
 

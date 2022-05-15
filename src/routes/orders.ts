@@ -3,15 +3,23 @@ import connection from '../models/connection';
 import OrdersController from '../controller/ordersController';
 import OrdersService from '../service/ordersService';
 import OrdersModel from '../models/ordersModel';
-import JwtValidate  from '../middlewares/jwtValidate';
+import JwtValidate from '../middlewares/jwtValidate';
+import OrderValidate from '../middlewares/orderValidate';
 
 const router = Router();
 const ordersModel = new OrdersModel(connection);
 const ordersService = new OrdersService(ordersModel);
 const ordersController = new OrdersController(ordersService);
-const validateJWT= new JwtValidate()
+const validateJWT = new JwtValidate();
+const orderValidate = new OrderValidate();
 
 router.get('/orders', ordersController.getAll);
-router.post('/orders',validateJWT.validate, ordersController.create);
+router.post(
+  '/orders',
+  validateJWT.validate,
+  validateJWT.checkUserExist,
+  orderValidate.validate,
+  ordersController.create,
+);
 
 export default router;

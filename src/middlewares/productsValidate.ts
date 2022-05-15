@@ -9,7 +9,6 @@ class ProductValidate {
 
   public validate: RequestHandler = async (req, res, next) => {
     const { error } = this.productSchema.validate(req.body);
-    console.log(error?.message);
 
     if (error?.message === '"name" is required' || error?.message === '"amount" is required') {
       return res.status(400).json({ message: error.message });
