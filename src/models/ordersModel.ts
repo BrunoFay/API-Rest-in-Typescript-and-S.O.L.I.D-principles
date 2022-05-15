@@ -1,5 +1,5 @@
-import { Pool } from 'mysql2/promise';
-import { IOrderDB } from '../interfaces';
+import { Pool, ResultSetHeader } from 'mysql2/promise';
+import { INewOrder, INewOrderToModel, IOrderDB } from '../interfaces';
 
 class OrdersModel {
   public connection: Pool;
@@ -19,7 +19,7 @@ class OrdersModel {
     return this.ordersFormated;
   }
 
-  aggregationformData(table: [] | any, table2: [] | any) {
+  private aggregationformData(table: [] | any, table2: [] | any) {
     const orders: IOrderDB[] = table.map((a: any) => ({
       id: a.id,
       userId: a.userId,
@@ -28,6 +28,17 @@ class OrdersModel {
         .map((b: any) => b.id),
     }));
     this.ordersFormated = orders;
+  }
+
+  public async create(order: INewOrderToModel) {
+    const [{ insertId }] = await this.connection.execute<ResultSetHeader>(
+      'INSERT INTO Trybesmith.Orders (userId) VALUES (?)',
+      [order.userId],
+    );
+
+    await this.connection
+      .execute('UPDATE Trybesmith.Products SET orderId = ? WHERE id = ?;',
+        [insertId, order.productsId]);
   }
 }
 
