@@ -27,15 +27,14 @@ class UserService {
   }
 
   async createToken(userInfos: INewUser) {
-    const token = jwt.sign({
-      data: {
-        username: userInfos.username,
-        password: userInfos.password,
+    const token = jwt.sign(
+      { data: { username: userInfos.username } },
+      process.env.JWT_SECRET || 'senhasecreta',
+      {
+        expiresIn: '7d',
+        algorithm: 'HS256',
       },
-    }, process.env.JWT_SECRET || 'senhasecreta', {
-      expiresIn: '7d',
-      algorithm: 'HS256',
-    });
+    );
     this.token = token;
   }
 }

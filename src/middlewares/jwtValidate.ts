@@ -15,25 +15,26 @@ class JwtValidate {
   }
 
   public validate: RequestHandler = async (req, res, next) => {
-    const token = req.headers.authorization;
+    try {
+      const token = req.headers.authorization;
 
-    if (!token) {
-      return res.status(401).json({ message: 'Token not found' });
-    }
+      if (!token) {
+        return res.status(401).json({ message: 'Token not found' });
+      }
 
-    const decoded:any = jwt.verify(token, this.segredo);
- 
-    if (!decoded) {
+      const decoded:any = jwt.verify(token, this.segredo);
+      const isUserValid = await usersService.checkIfUserexist(decoded.data);
+      console.log(isUserValid);
+
+      if (!isUserValid) return res.status(401).json({ message: 'Invalid token' });
+      req.body = { ...req.body, user: isUserValid.id };
+
+      next();
+    } catch (error) {
       return res
         .status(401)
         .json({ message: 'Invalid token' });
-    } 
-    const isUserValid = await usersService.checkIfUserexist(decoded.data);
-  
-    if (!isUserValid) return res.status(401).json({ message: 'Invalid token' });
-    req.body = { ...req.body, user: isUserValid.id };
-    
-    next();
+    }
   };
 }
 export default JwtValidate;

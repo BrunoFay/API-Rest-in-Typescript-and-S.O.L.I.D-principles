@@ -49,7 +49,7 @@ export interface IOrderDB {
 }
 export interface IOrder {
   userId: number,
-  productsId: number[]
+  productsIds: number[]
 }
 export interface INewOrder {
   productsId: number[],
