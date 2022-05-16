@@ -14,13 +14,6 @@ class JwtValidate {
     this.segredo = 'batatinha123';
   }
 
-  public checkUserExist: RequestHandler = async (req, res, next) => {
-    const isUserValid = await usersService.checkIfUserexist(req.body.user.data);
-    if (!isUserValid) return res.status(401).json({ message: 'Invalid token' });
-    req.body = { ...req.body, user: isUserValid.id };
-    next();
-  };
-
   public validate: RequestHandler = async (req, res, next) => {
     const token = req.headers.authorization;
 
@@ -28,15 +21,18 @@ class JwtValidate {
       return res.status(401).json({ message: 'Token not found' });
     }
 
-    const decoded = jwt.verify(token, this.segredo);
-
+    const decoded:any = jwt.verify(token, this.segredo);
+ 
     if (!decoded) {
       return res
         .status(401)
         .json({ message: 'Invalid token' });
-    }
-    req.body = { ...req.body, user: decoded };
-
+    } 
+    const isUserValid = await usersService.checkIfUserexist(decoded.data);
+  
+    if (!isUserValid) return res.status(401).json({ message: 'Invalid token' });
+    req.body = { ...req.body, user: isUserValid.id };
+    
     next();
   };
 }

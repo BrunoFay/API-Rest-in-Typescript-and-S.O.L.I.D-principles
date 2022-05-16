@@ -17,7 +17,6 @@ router.get('/orders', ordersController.getAll);
 router.post(
   '/orders',
   validateJWT.validate,
-  validateJWT.checkUserExist,
   orderValidate.validate,
   ordersController.create,
 );
