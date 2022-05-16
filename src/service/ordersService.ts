@@ -20,7 +20,7 @@ class OrdersService {
     arrayProducts.map(async (prod: number) => {
       await this.model.create({ userId: this.userId, productsIds: prod });
     });
-    return { userId: this.userId, productsId: arrayProducts };
+    return { userId: this.userId, productsIds: arrayProducts };
   }
 }
 
