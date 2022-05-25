@@ -1,3 +1,4 @@
+
 # Projeto Trybesmith [PORTUGUESE]
 
 Para este projeto, eu criei uma loja de itens medievais, no formato de uma API Rest, utilizando Typescript.
@@ -35,5 +36,3 @@ We created some endpoints that will read and write to a MySQL database.
 - MySQl
 - Eslint
 - Joi (field validation)
-
-
